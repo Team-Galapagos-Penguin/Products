@@ -1,20 +1,42 @@
-// import mongoose from 'mongoose';
+/* eslint-disable import/prefer-default-export */
+import mongoose from 'mongoose';
 
-// mongoose.connect('mongodb://localhost/sdc');
+mongoose.connect('mongodb://localhost/sdc');
 
-// const productSchema = mongoose.Schema({
-//   id: Number,
-//   campus: String,
-//   name: String,
-//   slogan: String,
-//   description: String,
-//   category: String,
-//   default_price: String,
-//   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-//   related: Array,
-// });
+const productStageSchema = mongoose.Schema({
+  id: Number,
+  name: String,
+  slogan: String,
+  description: String,
+  category: String,
+  default_price: String,
+  created_at: String,
+  updated_at: String,
+});
 
-// const Product = mongoose.model('Product', productSchema);
+const ProductStage = mongoose.model('ProductStage', productStageSchema);
+
+export const saveProductStage = (data) => {
+
+  const created = new Date();
+
+  const newProduct = new ProductStage({
+    id: data[0],
+    name: data[1],
+    slogan: data[2],
+    description: data[3],
+    category: data[4],
+    default_price: data[5],
+    created_at: created.toISOString(),
+    updated: created.toISOString(),
+  });
+
+  return newProduct.save()
+    .then((product) => {
+      return product;
+    })
+    .catch((err) => err);
+};
 
 // const featureSchema = mongoose.Schema({
 //   product_id: Number,
@@ -35,13 +57,31 @@
 
 // const Style = mongoose.model('Style', styleSchema);
 
-// const photoSchema = mongoose.Schema({
-//   product_id: Number,
-//   thumbnail_url: String,
-//   url: String,
-// });
+const photoStageSchema = mongoose.Schema({
+  id: Number,
+  styleId: Number,
+  thumbnail_url: String,
+  url: String,
+});
 
-// const Photo = mongoose.model('Photo', photoSchema);
+const PhotoStage = mongoose.model('PhotoStage', photoStageSchema);
+
+export const savePhotoStage = (data) => {
+  console.log(data[0]);
+
+  const newPhoto = new PhotoStage({
+    id: data[0],
+    styleId: data[1],
+    thumbnail_url: data[2],
+    url: data[3],
+  });
+
+  return newPhoto.save()
+    .then((photo) => {
+      console.log(photo);
+    })
+    .catch((err) => err);
+};
 
 // const skuSchema = mongoose.Schema({
 //   product_id: Number,

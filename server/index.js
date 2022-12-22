@@ -1,10 +1,9 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
+import bodyParser from 'body-parser';
 
-// const { PORT } = process.env;
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const dbModules = require('./db/db.js');
+dotenv.config();
 
 const app = express();
 
