@@ -2,11 +2,10 @@
   "name": "products-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "test",
     "prepare": "husky install",
-    "stream": "server/db/stream.js",
     "server": "nodemon server/index.js"
   },
   "dependencies": {
@@ -24,5 +23,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.2"
-  }
+  },
+  "type": "module"
 }
