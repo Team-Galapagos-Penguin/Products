@@ -1,23 +1,39 @@
 /* eslint-disable prefer-arrow-callback */
 import fs from 'fs';
 import es from 'event-stream';
-import { savePhotoStage, saveProductStage } from './db.js';
+import csv from 'csv-parser';
+import { savePhotoStage, saveManyProductStage } from './db.js';
 
-const streamData = () => {
+const streamData = (filePath, insertFunc) => {
+  const cb = () => {
+    console.log('the end');
+  };
+  const limit = 50000;
+  let rows = [];
   fs
-    .createReadStream('data/product.csv')
-    .pipe(es.split())
-    // remove first line with column names?
-
-    .pipe(es.map((line, i) => {
-      saveProductStage(line.split(','));
-    }))
+    .createReadStream(filePath)
+    .pipe(csv())
     .on('error', function (error) {
       return error;
     })
+    .pipe(es.map((line, cb) => {
+      if (rows.length < limit) {
+        rows.push(line);
+      } else {
+        insertFunc(rows);
+        rows = [];
+        rows.push(line);
+      }
+      cb();
+    }))
+
     .on('end', function () {
+      saveManyProductStage(rows);
       console.log('all done');
+    })
+    .on('error', function (error) {
+      return error;
     });
 };
 
-streamData();
+streamData('data/product.csv', saveManyProductStage);
