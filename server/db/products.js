@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 mongoose.connect('mongodb://localhost/sdc');
 
 const productSchema = mongoose.Schema({
-  id: Number,
+  _id: Number,
   name: String,
   slogan: String,
   description: String,
@@ -11,14 +11,19 @@ const productSchema = mongoose.Schema({
   default_price: String,
   created_at: String,
   updated_at: String,
+  features: [{ type: Number, ref: 'Feature' }],
 });
 
 const Product = mongoose.model('Product', productSchema);
 
-const saveManyProduct = (data) => Product.insertMany(data)
+export const saveManyProduct = (data) => Product.insertMany(data)
   .then(() => {
     console.log('success');
   })
   .catch((err) => (err));
 
-export default saveManyProduct;
+  export const editProduct = (product) => {
+    line._id = line.id;
+    console.log(product);
+  };
+
