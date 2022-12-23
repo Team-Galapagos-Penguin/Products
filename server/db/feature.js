@@ -9,3 +9,11 @@ const featureSchema = mongoose.Schema({
 });
 
 const Feature = mongoose.model('Feature', featureSchema);
+
+const saveManyFeature = (data) => Feature.insertMany(data)
+  .then(() => {
+    console.log('success');
+  })
+  .catch((err) => (err));
+
+export default saveManyFeature;

@@ -11,8 +11,10 @@ const photoSchema = mongoose.Schema({
 
 const Photo = mongoose.model('Photo', photoSchema);
 
-export function savePhoto(data) {
-  console.log(data);
-}
+const saveManyPhoto = (data) => Photo.insertMany(data)
+  .then(() => {
+    console.log('success');
+  })
+  .catch((err) => (err));
 
-// export default savePhoto;
+export default saveManyPhoto;

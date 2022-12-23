@@ -2,7 +2,11 @@
 import fs from 'fs';
 import es from 'event-stream';
 import csv from 'csv-parser';
-import { savePhotoStage, saveManyProductStage } from './db.js';
+import saveManyProduct from './product.js';
+import saveManyFeature from './feature.js';
+import saveManyPhoto from './photo.js';
+import saveManySku from './sku.js';
+import saveManyStyle from './style.js';
 
 const streamData = (filePath, insertFunc) => {
   const cb = () => {
@@ -28,7 +32,7 @@ const streamData = (filePath, insertFunc) => {
     }))
 
     .on('end', function () {
-      saveManyProductStage(rows);
+      insertFunc(rows);
       console.log('all done');
     })
     .on('error', function (error) {
@@ -36,4 +40,9 @@ const streamData = (filePath, insertFunc) => {
     });
 };
 
-streamData('data/product.csv', saveManyProductStage);
+streamData('data/product.csv', saveManyProduct);
+streamData('data/features.csv', saveManyFeature);
+streamData('data/photos.csv', saveManyPhoto);
+streamData('data/skus.csv', saveManySku);
+streamData('data/styles.csv', saveManyStyle);
+console.log('all data loaded');

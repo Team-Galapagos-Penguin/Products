@@ -14,35 +14,13 @@ const productStageSchema = mongoose.Schema({
   updated_at: String,
 });
 
-const ProductStage = mongoose.model('ProductStage', productStageSchema);
+// const ProductStage = mongoose.model('ProductStage', productStageSchema);
 
-// export const saveProductStage = (data) => {
-//   const created = new Date();
-
-//   const newProduct = new ProductStage({
-//     id: data.id,
-//     name: data.name,
-//     slogan: data.slogan,
-//     description: data.description,
-//     category: data.category,
-//     default_price: data.default_price,
-//     created_at: created.toISOString(),
-//     updated: created.toISOString(),
-//   });
-
-//   return newProduct.save()
-//     .then((product) => {
-
-//       return product;
-//     })
-//     .catch((err) => err);
-// };
-
-export const saveManyProductStage = (data) => ProductStage.insertMany(data)
-  .then(() => {
-    console.log('success');
-  })
-  .catch((err) => (err));
+// export const saveManyProductStage = (data) => ProductStage.insertMany(data)
+//   .then(() => {
+//     console.log('success');
+//   })
+//   .catch((err) => (err));
 
 // const featureSchema = mongoose.Schema({
 //   product_id: Number,

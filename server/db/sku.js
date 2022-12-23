@@ -9,3 +9,11 @@ const skuSchema = mongoose.Schema({
 });
 
 const Sku = mongoose.model('Sku', skuSchema);
+
+const saveManySku = (data) => Sku.insertMany(data)
+  .then(() => {
+    console.log('success');
+  })
+  .catch((err) => (err));
+
+export default saveManySku;

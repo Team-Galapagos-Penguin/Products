@@ -9,8 +9,16 @@ const productSchema = mongoose.Schema({
   description: String,
   category: String,
   default_price: String,
-  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-  related: Array,
+  created_at: String,
+  updated_at: String,
 });
 
 const Product = mongoose.model('Product', productSchema);
+
+const saveManyProduct = (data) => Product.insertMany(data)
+  .then(() => {
+    console.log('success');
+  })
+  .catch((err) => (err));
+
+export default saveManyProduct;

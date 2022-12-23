@@ -12,3 +12,11 @@ const styleSchema = mongoose.Schema({
 });
 
 const Style = mongoose.model('Style', styleSchema);
+
+const saveManyStyle = (data) => Style.insertMany(data)
+  .then(() => {
+    console.log('success');
+  })
+  .catch((err) => (err));
+
+export default saveManyStyle;
