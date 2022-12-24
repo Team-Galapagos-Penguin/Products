@@ -26,6 +26,8 @@ const streamData = (filePath, insertFunc) => {
     .pipe(es.map((line, cb) => {
       if (rows.length < limit) {
         line._id = line.id;
+        // line.product = line.product_id;
+        line.style_id = line.styleId;
         rows.push(line);
       } else {
         insertFunc(rows);
@@ -46,9 +48,10 @@ const streamData = (filePath, insertFunc) => {
 
 // streamData('data_samples/productSample.csv', saveManyProduct);
 // streamData('data/features.csv', saveManyFeature);
-// streamData('data/photos.csv', saveManyPhoto);
+// streamData('data_samples/featuresSample.csv', saveManyFeature);
+streamData('data/photos.csv', saveManyPhoto);
 // streamData('data/skus.csv', saveManySku);
 // streamData('data/styles.csv', saveManyStyle);
 // streamData('data_samples/productSample.csv', saveManyProduct);
-findFeature(423444);
+// findFeature(423444);
 console.log('all data loaded');

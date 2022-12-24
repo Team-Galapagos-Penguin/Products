@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 mongoose.connect('mongodb://localhost/sdc');
 
 const skuSchema = mongoose.Schema({
-  product_id: Number,
+  _id: Number,
+  style_id: Number,
   quantity: Number,
   size: String,
 });

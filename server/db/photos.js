@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 mongoose.connect('mongodb://localhost/sdc');
 
 const photoSchema = mongoose.Schema({
-  id: Number,
-  styleId: Number,
+  _id: Number,
+  style_id: Number,
   thumbnail_url: String,
   url: String,
 });
