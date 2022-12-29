@@ -10,7 +10,6 @@ const streamData = (filePath) => {
   const cb = () => {
     console.log('the end');
   };
-
   let currentId = 0;
   let currentFeatures = [];
 
@@ -31,9 +30,11 @@ const streamData = (filePath) => {
         currentId = line.product_id;
       }
       if (currentId !== line.product_id) {
-        addFeatures(currentId, currentFeatures);
-        currentId = line.product_id;
-        currentFeatures = [];
+        addFeatures(currentId, currentFeatures)
+          .then(() => {
+            currentId = line.product_id;
+            currentFeatures = [];
+          });
       }
       if (currentId === line.product_id) {
         newFeature(line);

@@ -45,7 +45,7 @@ export const saveManyProduct = (data) => Product.insertMany(data)
 
 export const addFeatures = (id, newFeatures) => Product.findById(id)
   .then((product) => {
-    product.features = newFeatures;
+    product.features.concat(newFeatures);
     product.save();
   })
   .catch((err) => err);
