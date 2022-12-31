@@ -7,8 +7,8 @@ import { addFeatures } from './products.js';
 mongoose.connect('mongodb://localhost/sdc');
 
 const streamData = (filePath) => {
-  let limit = 100000;
-  const increaseAmount = 100000;
+  let limit = 10;
+  const increaseAmount = 10;
   let features = {};
 
   fs
@@ -16,13 +16,15 @@ const streamData = (filePath) => {
     .pipe(csv())
     .on('error', (error) => error)
 
-    .pipe(es.map((line, callback) => {
+    .pipe(es.mapSync((line, callback) => {
       if (Number(line.product_id) === limit) {
         for (let i = limit - increaseAmount; i <= limit; i += 1) {
+          es.pause();
           addFeatures(i, features[i]);
+          es.resume();
         }
         features = {};
-        limit += 100000;
+        limit += 10;
         console.log('features added');
       }
       if (!features[line.product_id]) {
