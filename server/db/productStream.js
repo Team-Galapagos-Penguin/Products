@@ -23,6 +23,7 @@ const streamData = (filePath, insertFunc) => {
       } else {
         insertFunc(rows);
         rows = [];
+        line._id = line.id;
         rows.push(line);
       }
       cb();
@@ -31,8 +32,8 @@ const streamData = (filePath, insertFunc) => {
     .on('end', () => {
       insertFunc(rows);
       console.log('all done');
-    })
-    .on('error', (error) => error);
+    });
+    // .on('error', (error) => error);
 };
 
 streamData('data/product.csv', saveManyProduct);

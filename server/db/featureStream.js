@@ -7,47 +7,62 @@ import { addFeatures } from './products.js';
 mongoose.connect('mongodb://localhost/sdc');
 
 const streamData = (filePath) => {
-  const cb = () => {
-    console.log('the end');
-  };
-  let currentId = 0;
-  let currentFeatures = [];
-
-  const newFeature = (line) => {
-    const feature = {
-      feature: line.feature,
-      value: line.value,
-    };
-    currentFeatures.push(feature);
-  };
+  let limit = 100000;
+  const increaseAmount = 100000;
+  let features = {};
 
   fs
     .createReadStream(filePath)
     .pipe(csv())
     .on('error', (error) => error)
-    .pipe(es.map((line, cb) => {
-      if (currentId === 0) {
-        currentId = line.product_id;
+
+    .pipe(es.map((line, callback) => {
+      if (Number(line.product_id) === limit) {
+        for (let i = limit - increaseAmount; i <= limit; i += 1) {
+          addFeatures(i, features[i]);
+        }
+        features = {};
+        limit += 100000;
+        console.log('features added');
       }
-      if (currentId !== line.product_id) {
-        addFeatures(currentId, currentFeatures)
-          .then(() => {
-            currentId = line.product_id;
-            currentFeatures = [];
-          });
+      if (!features[line.product_id]) {
+        features[line.product_id] = [{ feature: line.feature, value: line.value }];
+      } else {
+        features[line.product_id].push({ feature: line.feature, value: line.value });
       }
-      if (currentId === line.product_id) {
-        newFeature(line);
-      }
-      cb();
+      callback();
     }))
 
+    .on('error', (error) => error)
+
     .on('end', () => {
-      addFeatures(currentId, currentFeatures);
+      for (let i = limit - increaseAmount; i <= limit; i += 1) {
+        addFeatures(i, features[i]);
+      }
       console.log('all done');
-    })
-    .on('error', (error) => error);
+    });
 };
 
 // streamData('data_samples/featuresSample.csv');
 streamData('data/features.csv');
+
+// .pipe(es.map((line, callback) => {
+//   const id = line.product_id;
+//   if (Number(id) === limit) {
+//     for (let i = limit - increaseAmount; i <= limit; i += 1) {
+//       const productId = i;
+//       const feats = features[productId];
+//       addFeatures(productId, feats);
+//     }
+//     features = {};
+//     limit += 10000;
+//     console.log('features added');
+//   }
+//   if (!features[id]) {
+//     features[id] = [];
+//     features[id].push({ feature: line.feature, value: line.value });
+//   } else {
+//     features[id].push({ feature: line.feature, value: line.value });
+//   }
+//   callback(null);
+// }))

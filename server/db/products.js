@@ -2,13 +2,6 @@ import mongoose from 'mongoose';
 
 mongoose.connect('mongodb://localhost/sdc');
 
-const featureSchema = mongoose.Schema({
-  feature: String,
-  value: String,
-});
-
-// const feature = mongoose.model('Feature', featureSchema);
-
 const productSchema = mongoose.Schema(
   {
     _id: Number,
@@ -17,7 +10,7 @@ const productSchema = mongoose.Schema(
     description: String,
     category: String,
     default_price: String,
-    features: [featureSchema],
+    features: Array,
   },
   { timestamps: true },
 );
@@ -30,22 +23,12 @@ export const saveManyProduct = (data) => Product.insertMany(data)
   })
   .catch((err) => (err));
 
-// export const editProduct = (product) => {
-//   line._id = line.id;
-//   console.log(product);
-// };
-
-// export const addFeatures = (id, newFeatures) => {
-//   return Product.findByIdAndUpdate(id, { features: newFeatures})
-//     .then(() => {
-//       console.log('features added');
-//     })
-//     .catch((err) => err);
-//   }
-
 export const addFeatures = (id, newFeatures) => Product.findById(id)
   .then((product) => {
-    product.features.concat(newFeatures);
+    // console.log(newFeatures);
+    // console.log(id);
+    product.features.push(...newFeatures);
     product.save();
+    // console.log(product);
   })
   .catch((err) => err);
