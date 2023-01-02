@@ -4,19 +4,21 @@ mongoose.connect('mongodb://localhost/sdc');
 
 const styleSchema = mongoose.Schema({
   _id: Number,
-  product: Number,
+  product_id: Number,
   name: String,
   original_price: String,
   sale_price: String,
   default_style: Boolean,
+  photos: Array,
+  skus: Array,
 });
 
 const Style = mongoose.model('Style', styleSchema);
 
-const saveManyStyle = (data) => Style.insertMany(data)
+export const saveManyStyles = (data) => Style.insertMany(data)
   .then(() => {
-    console.log('success');
+    console.log('style success');
   })
   .catch((err) => (err));
 
-export default saveManyStyle;
+
