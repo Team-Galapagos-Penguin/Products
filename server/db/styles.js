@@ -10,16 +10,10 @@ const styleSchema = mongoose.Schema({
   sale_price: String,
   default_style: Boolean,
   photos: Array,
-  skus: Array,
+  skus: {},
 });
 
 const Style = mongoose.model('Style', styleSchema);
-
-export const saveManyStyles = (data) => Style.insertMany(data)
-  .then(() => {
-    console.log('style success');
-  })
-  .catch((err) => (err));
 
 const photoSchema = mongoose.Schema({
   _id: Number,
@@ -27,6 +21,19 @@ const photoSchema = mongoose.Schema({
 });
 
 const Photo = mongoose.model('Photo', photoSchema);
+
+const skuSchema = mongoose.Schema({
+  _id: Number,
+  skus: {},
+});
+
+const Sku = mongoose.model('Sku', skuSchema);
+
+export const saveManyStyles = (data) => Style.insertMany(data)
+  .then(() => {
+    console.log('style success');
+  })
+  .catch((err) => (err));
 
 export const saveManyPhotos = (data) => Photo.insertMany(data)
   .then(() => {
@@ -38,7 +45,7 @@ export const photosToStyles = () => Photo.find({})
   .cursor()
   .on('data', ((doc) => {
     const id = doc._id;
-    const urls = doc.urls;
+    const { urls } = doc;
     return Style.findById(id)
       .then((style) => {
         style.photos.push(...urls);
@@ -48,4 +55,26 @@ export const photosToStyles = () => Photo.find({})
   }))
   .on('end', () => {
     console.log('photos added to style');
+  });
+
+export const saveManySkus = (data) => Sku.insertMany(data)
+  .then(() => {
+    console.log('skus success');
+  })
+  .catch((err) => (err));
+
+export const skusToStyles = () => Sku.find({})
+  .cursor()
+  .on('data', ((doc) => {
+    const id = doc._id;
+    const { skus } = doc;
+    return Style.findById(id)
+      .then((style) => {
+        style.skus = skus;
+        style.save();
+      })
+      .catch((err) => err);
+  }))
+  .on('end', () => {
+    console.log('skus added to styles');
   });

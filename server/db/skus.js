@@ -4,17 +4,20 @@ mongoose.connect('mongodb://localhost/sdc');
 
 const skuSchema = mongoose.Schema({
   _id: Number,
-  style_id: Number,
-  quantity: Number,
-  size: String,
+  skus: {},
 });
+
+// skus: [
+//   {
+//     24233432: { quantity: 4, size: 3 },
+//   24233232: { quantity: 4, size: 3 }
+// }
+// ]
 
 const Sku = mongoose.model('Sku', skuSchema);
 
-const saveManySku = (data) => Sku.insertMany(data)
+export const saveManySku = (data) => Sku.insertMany(data)
   .then(() => {
-    console.log('success');
+    console.log('skus success');
   })
   .catch((err) => (err));
-
-export default saveManySku;
