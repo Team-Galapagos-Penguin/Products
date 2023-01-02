@@ -6,31 +6,21 @@ import { addFeatures } from './products.js';
 
 mongoose.connect('mongodb://localhost/sdc');
 
-const streamData = (filePath) => {
-  let limit = 10;
-  const increaseAmount = 10;
-  let features = {};
+const streamData = (filePath, minimum, limit) => {
+  const features = {};
 
   fs
     .createReadStream(filePath)
     .pipe(csv())
     .on('error', (error) => error)
 
-    .pipe(es.mapSync((line, callback) => {
-      if (Number(line.product_id) === limit) {
-        for (let i = limit - increaseAmount; i <= limit; i += 1) {
-          es.pause();
-          addFeatures(i, features[i]);
-          es.resume();
+    .pipe(es.map((line, callback) => {
+      if (Number(line.product_id <= limit && line.product_id > minimum)) {
+        if (!features[line.product_id]) {
+          features[line.product_id] = [{ feature: line.feature, value: line.value }];
+        } else {
+          features[line.product_id].push({ feature: line.feature, value: line.value });
         }
-        features = {};
-        limit += 10;
-        console.log('features added');
-      }
-      if (!features[line.product_id]) {
-        features[line.product_id] = [{ feature: line.feature, value: line.value }];
-      } else {
-        features[line.product_id].push({ feature: line.feature, value: line.value });
       }
       callback();
     }))
@@ -38,7 +28,7 @@ const streamData = (filePath) => {
     .on('error', (error) => error)
 
     .on('end', () => {
-      for (let i = limit - increaseAmount; i <= limit; i += 1) {
+      for (let i = minimum; i <= limit; i += 1) {
         addFeatures(i, features[i]);
       }
       console.log('all done');
@@ -46,7 +36,12 @@ const streamData = (filePath) => {
 };
 
 // streamData('data_samples/featuresSample.csv');
-streamData('data/features.csv');
+// streamData('data/features.csv', 0, 200000);
+// streamData('data/features.csv', 200000, 400000);
+// streamData('data/features.csv', 400000, 600000);
+// streamData('data/features.csv', 600000, 800000);
+// streamData('data/features.csv', 800000, 1000000);
+// streamData('data/features.csv', 1000000, 1200000);
 
 // .pipe(es.map((line, callback) => {
 //   const id = line.product_id;
