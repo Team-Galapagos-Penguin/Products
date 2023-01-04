@@ -17,7 +17,9 @@
     "line-by-line": "^0.1.6",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.1",
-    "nodemon": "^2.0.20"
+    "newrelic": "^9.7.5",
+    "nodemon": "^2.0.20",
+    "pm2": "^5.2.2"
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^14.2.1",

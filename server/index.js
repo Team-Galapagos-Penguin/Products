@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
-import { findOneProduct } from './db/products.js';
+import { findOneProduct, findManyProducts } from './db/products.js';
 import { findStyles } from './db/styles.js';
 import { findRelated } from './db/related.js';
 
@@ -45,6 +45,19 @@ app.get('/products/:product_id/related', (req, res) => {
       res.json(related);
     })
     .catch((err) => err);
+});
+
+// GET products
+app.get('/products', async (req, res) => {
+  const total = req.params.page * req.params.count || 5;
+  let results = await findManyProducts(total);
+    // .then((products) => {
+    //   console.log(products)
+    //   res.send(products);
+    // })
+    // .catch((err) => err);
+    // console.log(results);
+    await res.send(results);
 });
 
 app.listen(process.env.PORT);

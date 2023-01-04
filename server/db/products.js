@@ -40,3 +40,25 @@ export const findOneProduct = (id) => Product.findById(id)
   .lean()
   .then((product) => product)
   .catch((err) => err);
+
+export const findManyProducts = (total) => {
+    total = total || 5;
+    let count = 0;
+    const products = [];
+    Product.find({})
+      // .select('_id, name, slogan, description, category, default_price, createdAt, updatedAt')
+      .lean()
+      .limit(total)
+      .cursor()
+      .on('error', (err) => err)
+      .on('data', ((doc) => {
+        delete doc.features;
+        if (count < total) {
+          products.push(doc);
+          count++;
+        }
+      }))
+      .on('end', () => {
+        return products;
+      })
+  };
