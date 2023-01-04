@@ -16,6 +16,12 @@ const streamData = (filePath) => {
     .on('error', (error) => error)
 
     .pipe(es.map((line, callback) => {
+      if (Number(line.styleId) > limit) {
+        const results = Object.values(photos);
+        saveManyPhotos(results);
+        photos = {};
+        limit += 2;
+      }
       if (Number(line.styleId) <= limit) {
         if (!photos[line.styleId]) {
           photos[line.styleId] = {
@@ -25,12 +31,6 @@ const streamData = (filePath) => {
         } else {
           photos[line.styleId].urls.push({ url: line.url, thumbnail_url: line.thumbnail_url });
         }
-      }
-      if (Number(line.styleId) > limit) {
-        const results = Object.values(photos);
-        saveManyPhotos(results);
-        photos = {};
-        limit += 2;
       }
       callback();
     }))

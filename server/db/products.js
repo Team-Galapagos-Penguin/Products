@@ -36,3 +36,7 @@ export const addFeatures = (id, newFeatures) => Product.findById(id)
   })
   .catch((err) => err);
 
+export const findOneProduct = (id) => Product.findById(id)
+  .lean()
+  .then((product) => product)
+  .catch((err) => err);

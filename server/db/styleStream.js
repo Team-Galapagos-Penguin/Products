@@ -22,6 +22,8 @@ const streamData = (filePath) => {
       }
       line._id = line.id;
       line.product_id = line.productId;
+      line.style_id = line.id;
+      line['default?'] = line.default_style;
       rows.push(line);
       callback();
     }))

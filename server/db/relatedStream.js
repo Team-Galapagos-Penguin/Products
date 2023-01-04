@@ -2,12 +2,12 @@ import fs from 'fs';
 import es from 'event-stream';
 import csv from 'csv-parser';
 import mongoose from 'mongoose';
-import { saveManySkus, skusToStyles } from './styles.js';
+import { saveManyRelated } from './related.js';
 
 mongoose.connect('mongodb://localhost/sdc');
 
 const streamData = (filePath) => {
-  let limit = 50000;
+  let limit = 500000;
   let data = {};
 
   fs
@@ -16,20 +16,20 @@ const streamData = (filePath) => {
     .on('error', (error) => error)
 
     .pipe(es.map((line, callback) => {
-      if (Number(line.styleId) > limit) {
+      if (Number(line.current_product_id) > limit) {
         const results = Object.values(data);
-        saveManySkus(results);
+        saveManyRelated(results);
         data = {};
         limit += 50000;
       }
-      if (Number(line.styleId) <= limit) {
-        if (!data[line.styleId]) {
-          data[line.styleId] = {
-            _id: line.styleId,
-            skus: { [line.id]: { quantity: line.quantity, size: line.size } },
+      if (Number(line.current_product_id) <= limit) {
+        if (!data[line.current_product_id]) {
+          data[line.current_product_id] = {
+            _id: line.current_product_id,
+            products: [line.related_product_id],
           };
         } else {
-          data[line.styleId].skus[line.id] = { quantity: line.quantity, size: line.size };
+          data[line.current_product_id].products.push(line.related_product_id);
         }
       }
       callback();
@@ -39,11 +39,10 @@ const streamData = (filePath) => {
 
     .on('end', () => {
       const results = Object.values(data);
-      saveManySkus(results);
+      saveManyRelated(results);
       console.log('all done');
     });
 };
 
-// streamData('data/skus.csv');
-// streamData('data_samples/skusSample.csv');
-skusToStyles();
+streamData('data/related.csv');
+// streamData('data_samples/relatedSample.csv');

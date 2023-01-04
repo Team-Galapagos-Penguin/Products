@@ -4,11 +4,12 @@ mongoose.connect('mongodb://localhost/sdc');
 
 const styleSchema = mongoose.Schema({
   _id: Number,
-  product_id: Number,
+  product_id: { type: Number, index: true },
+  style_id: Number,
   name: String,
   original_price: String,
   sale_price: String,
-  default_style: Boolean,
+  'default?': Boolean,
   photos: Array,
   skus: {},
 });
@@ -78,3 +79,8 @@ export const skusToStyles = () => Sku.find({})
   .on('end', () => {
     console.log('skus added to styles');
   });
+
+export const findStyles = (id) => Style.find({ product_id: id })
+  .lean()
+  .then((styles) => styles)
+  .catch((err) => err);
