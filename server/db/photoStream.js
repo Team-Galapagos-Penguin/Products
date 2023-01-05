@@ -20,7 +20,7 @@ const streamData = (filePath) => {
         const results = Object.values(photos);
         saveManyPhotos(results);
         photos = {};
-        limit += 2;
+        limit += 50000;
       }
       if (Number(line.styleId) <= limit) {
         if (!photos[line.styleId]) {
