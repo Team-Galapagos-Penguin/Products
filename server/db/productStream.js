@@ -38,4 +38,3 @@ const streamData = (filePath, insertFunc) => {
 
 streamData('data/product.csv', saveManyProduct);
 // streamData('data_samples/productSample.csv', saveManyProduct);
-console.log('all data loaded');

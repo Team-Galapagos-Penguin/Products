@@ -84,3 +84,4 @@ export const findStyles = (id) => Style.find({ product_id: id })
   .lean()
   .then((styles) => styles)
   .catch((err) => err);
+
