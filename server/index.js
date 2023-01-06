@@ -59,8 +59,8 @@ app.get('/products', async (req, res) => {
     .catch((err) => err);
 });
 
-app.get('/loaderio-471fbb0d76ec0de4739847a174c8a608', (req, res) => {
-  res.send('loaderio-471fbb0d76ec0de4739847a174c8a608');
+app.get('/loaderio-d369f42818799ec71faac3249c8f34be', (req, res) => {
+  res.send('loaderio-d369f42818799ec71faac3249c8f34be');
 })
 
 app.listen(process.env.PORT);
