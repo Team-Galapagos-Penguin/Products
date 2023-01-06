@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb://localhost/sdc');
+mongoose.connect('mongodb://ec2-34-230-73-250.compute-1.amazonaws.com/sdc');
 
 const productSchema = mongoose.Schema(
   {
