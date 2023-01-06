@@ -59,5 +59,9 @@ app.get('/products', async (req, res) => {
     .catch((err) => err);
 });
 
+app.get('/loaderio-471fbb0d76ec0de4739847a174c8a608', (req, res) => {
+  res.send('/loaderio-471fbb0d76ec0de4739847a174c8a608');
+})
+
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
