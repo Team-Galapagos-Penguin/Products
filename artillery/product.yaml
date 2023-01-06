@@ -1,12 +1,12 @@
 config:
-  target: "http://localhost:8000"
+  target: "http://ec2-34-230-73-250.compute-1.amazonaws.com"
   phases:
-    - duration: 60
-      arrivalRate: 250
+    - duration: 10
+      arrivalRate: 1
 scenarios:
   - flow:
     - get:
-        url: "/products/1000000"
+        url: "/products/10"
 
 
 
