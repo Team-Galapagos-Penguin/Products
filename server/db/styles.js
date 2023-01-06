@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb://ec2-34-230-73-250.compute-1.amazonaws.com/sdc');
+mongoose.set('strictQuery', false);
+
+mongoose.connect('mongodb://107.23.84.113:3002/sdc');
 
 const styleSchema = mongoose.Schema({
   _id: Number,

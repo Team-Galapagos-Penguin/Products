@@ -1,9 +1,9 @@
 config:
-  target: "http://ec2-34-230-73-250.compute-1.amazonaws.com/sdc"
+  target: "http://107.23.84.113:3002"
   phases:
-    - duration: 5
+    - duration: 10
       arrivalRate: 1
 scenarios:
   - flow:
     - get:
-        url: "/products/1000000/styles"
+        url: "/products/100/styles"

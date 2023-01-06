@@ -1,5 +1,5 @@
 config:
-  target: "http://ec2-34-230-73-250.compute-1.amazonaws.com"
+  target: "http://107.23.84.113:3002"
   phases:
     - duration: 10
       arrivalRate: 1
