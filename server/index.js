@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // GET product info
 app.get('/products/:product_id', (req, res) => {
   const id = req.params.product_id;
+  console.log(id);
   return findOneProduct(id)
     .then((product) => {
       res.json(product);
