@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect('mongodb://ec2-107-23-84-113.compute-1.amazonaws.com:3002/sdc')
+mongoose.connect('mongodb://ec2-107-23-84-113.compute-1.amazonaws.com/sdc')
   .then(() => {
     console.log('connected to db')
   })
