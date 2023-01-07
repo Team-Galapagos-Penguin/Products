@@ -2,7 +2,11 @@ import mongoose from 'mongoose';
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect('mongodb://ec2-107-23-84-113.compute-1.amazonaws.com/sdc');
+mongoose.connect('mongodb://ec2-3-80-134-66.compute-1.amazonaws.com/sdc')
+  .then(() => {
+    console.log('styles connected to db')
+  })
+  .catch((err) => err);
 
 const styleSchema = mongoose.Schema({
   _id: Number,
